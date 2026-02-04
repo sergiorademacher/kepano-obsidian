@@ -47,10 +47,16 @@ The overhead of "where should this go?" kills momentum. This system minimizes th
 Categories define the **type** of content. A note belongs to one primary category based on what it fundamentally is.
 
 **Current Categories:**
-- Media: `[[Books]]`, `[[Movies]]`, `[[Shows]]`, `[[Albums]]`, `[[Games]]`, `[[Podcasts]]`
-- Content: `[[Posts]]`, `[[Clippings]]`, `[[Evergreen]]`, `[[Journal]]`
-- Organization: `[[People]]`, `[[Companies]]`, `[[Places]]`, `[[Projects]]`
-- Life: `[[Meetings]]`, `[[Events]]`, `[[Trips]]`, `[[Recipes]]`, `[[Products]]`
+
+| Group | Categories |
+|-------|------------|
+| **Media** | `[[Books]]`, `[[Movies]]`, `[[Shows]]`, `[[Albums]]`, `[[Games]]`, `[[Podcasts]]` |
+| **Content** | `[[Posts]]`, `[[Clippings]]`, `[[Evergreen]]`, `[[Journal]]` |
+| **Organization** | `[[People]]`, `[[Companies]]`, `[[Places]]`, `[[Projects]]` |
+| **Life** | `[[Meetings]]`, `[[Events]]`, `[[Trips]]`, `[[Recipes]]`, `[[Products]]` |
+| **Knowledge** | `[[How-tos]]`, `[[Reference]]`, `[[Topics]]`, `[[Courses]]` |
+| **Business** | `[[Work Documents]]` (proposals, invoices, contracts) |
+| **Health** | `[[Workouts]]`, `[[Habits]]` |
 
 ### Layer 2: Topics (What it's ABOUT)
 Topics describe the **subject matter**. A note can have multiple topics because ideas cross domains.
@@ -65,12 +71,16 @@ topics:
   - "[[Technology]]"
 ```
 
+Use the **Topic Template** to create dedicated topic notes that become hubs through backlinks.
+
 ### Layer 3: Tags (Status/State)
 Tags mark **transient states** or special designations:
 - `to-read`, `to-watch` - Queue markers
 - `0🌲` - Evergreen note marker
 - `note`, `journal` - Note type markers
+- `how-to`, `reference`, `topic` - Note type markers
 - `categories` - Marks category hub pages
+- `processed` - Marks journal entries that have been reviewed
 
 ---
 
@@ -119,6 +129,8 @@ tags:
   - journal
 ```
 
+**Processing Workflow:** Use `![[Inbox.base]]` to see unprocessed journal entries. Add the `processed` tag after reviewing.
+
 ### Literature Notes → Clippings
 When you read something worth preserving, use the **Clipping Template**:
 ```yaml
@@ -149,11 +161,13 @@ Evergreen notes are:
 ```
 1. Capture (Journal) → Quick thoughts throughout the day
          ↓
-2. Process (Clipping) → Extract interesting ideas from sources
+2. Review (Inbox.base) → See unprocessed entries
          ↓
-3. Distill (Evergreen) → Transform into atomic, titled concepts
+3. Process (Clipping) → Extract interesting ideas from sources
          ↓
-4. Connect → Link evergreen notes to each other
+4. Distill (Evergreen) → Transform into atomic, titled concepts
+         ↓
+5. Connect → Link evergreen notes to each other
 ```
 
 ### Key Differences from Traditional Zettelkasten
@@ -166,110 +180,233 @@ Evergreen notes are:
 
 ---
 
-## Creating a Topics Category
+## New Category Systems
 
-**Should you create a `[[Topics]]` category?**
+### How-tos (Personal Procedures)
+For recurring tasks you need to remember how to do.
 
-Generally **no** - topics work differently than categories:
+**Template:** How-to Template
+```yaml
+categories:
+  - "[[How-tos]]"
+topics: []
+frequency: Weekly    # Daily, Weekly, Monthly, Yearly
+last: 2026-01-28     # When you last did it
+```
 
-### Topics Are Not a Category
-Topics are a **property** on notes, not a category of content. A topic like `[[Artificial Intelligence]]` is linked via the `topics:` field, not the `categories:` field.
+**Views:** All, By Topic, Recently Done
 
-### What You SHOULD Do Instead
+**Use for:** Pool maintenance, car care, home repairs, software setup procedures.
 
-**Option 1: Topic Notes (Recommended)**
-Create notes for each topic you want to track. These become natural hubs through backlinks:
-
-```markdown
-# Artificial Intelligence.md
 ---
+
+### Reference (Permanent Information)
+For static information you need to look up occasionally.
+
+**Template:** Reference Template
+```yaml
+categories:
+  - "[[Reference]]"
+type: []              # Bank accounts, Insurance, Subscriptions, Documents
+institution:
+account:
+expires:
+```
+
+**Views:** All, By Type, Expiring Soon
+
+**Use for:** Bank accounts, insurance policies, subscriptions, important documents.
+
+**Security Note:** Don't store sensitive credentials - use a password manager. Store only reference info (last 4 digits, contact numbers, etc.).
+
+---
+
+### Topics (Subject Hubs)
+For creating explicit topic notes that aggregate related content.
+
+**Template:** Topic Template
+```yaml
 tags:
   - topic
+aliases: []
+related: []
+```
+
+**Body:** Includes `![[Related.base]]` to automatically show connected notes.
+
+**Use for:** Any subject you want to track across multiple notes (AI, Philosophy, Home maintenance).
+
 ---
 
-AI encompasses machine learning, neural networks, and cognitive systems.
+### Work Documents (Business)
+Unified system for proposals, invoices, contracts, and quotes.
 
+**Template:** Work Document Template
+```yaml
+categories:
+  - "[[Work Documents]]"
+type: []              # Proposal, Invoice, Contract, Quote
+customer: []
+project: []
+status: Draft         # Draft, Sent, Accepted, Rejected, Paid, Expired
+value:
+sent:
+due:
+paid:
+```
+
+**Views:** All, Pipeline, Proposals, Invoices, Unpaid, By Customer, By Project, Won, Lost
+
+**Workflow:**
+```
+Draft → Sent → Accepted → (Create Project)
+            → Rejected/Expired
+
+Invoice: Draft → Sent → Paid
+```
+
+---
+
+### Courses (Learning)
+For tracking online courses and learning resources.
+
+**Template:** Course Template
+```yaml
+categories:
+  - "[[Courses]]"
+instructor: []
+platform:             # Coursera, Udemy, YouTube, etc.
+status: Not Started   # Not Started, In Progress, Completed
+progress:             # Percentage or module number
+rating:
+```
+
+**Views:** All, In Progress, To Start, Completed, By Topic, By Instructor
+
+---
+
+### Workouts (Health)
+For tracking exercise sessions.
+
+**Template:** Workout Template
+```yaml
+categories:
+  - "[[Workouts]]"
+type: []              # Strength, Cardio, Yoga, etc.
+duration:
+intensity:            # Low, Medium, High
+date: {{date}}
+```
+
+**Views:** All, Recent, By Type, This Week, This Month
+
+---
+
+### Habits (Tracking)
+For building and tracking habits.
+
+**Template:** Habit Template
+```yaml
+categories:
+  - "[[Habits]]"
+frequency: Daily      # Daily, Weekly, Monthly
+target:               # What you're aiming for
+streak: 0
+status: Active        # Active, Paused
+```
+
+**Views:** All, Active, Daily, Weekly, Paused
+
+**Structure:** Each habit note includes sections for Why, Cue, Routine, and Reward (based on habit loop science).
+
+---
+
+## Utility Bases
+
+These bases work across categories and can be embedded anywhere.
+
+### Inbox.base
+Shows unprocessed journal entries for Zettelkasten workflow.
+```markdown
+![[Inbox.base]]
+```
+**Views:** Unprocessed (last 30 days), Recent (7 days), All Unprocessed
+
+**Workflow:** Review entries, then add `processed` tag to clear them from inbox.
+
+---
+
+### Review.base
+Shows items needing periodic review based on their frequency setting.
+```markdown
+![[Review.base]]
+```
+**Views:** Needs Review, How-tos Due, Never Reviewed
+
+**Works with:** Any note that has `frequency` and `last` properties.
+
+---
+
+### Calendar.base
+Shows all dated items in chronological views.
+```markdown
+![[Calendar.base]]
+```
+**Views:** Upcoming (30 days), This Week, Past Week, All Dated Items
+
+**Works with:** Any note with `date`, `start`, or `created` properties.
+
+---
+
+### Related.base
+Shows notes related to the current note based on shared links.
+```markdown
 ![[Related.base]]
 ```
+Already included in Topic Template. Useful for finding unexpected connections.
 
-**Option 2: Topic as Evergreen**
-Some topics are themselves ideas worth capturing:
+---
+
+### Backlinks.base
+Shows all notes linking to the current note.
 ```markdown
-# Emergence.md
----
-tags:
-  - 0🌲
----
-
-Emergence is when complex behavior arises from simple rules.
+![[Backlinks.base]]
 ```
+**Views:** Backlinks, Recent entries
 
-**Option 3: Base Query for Topics**
-Create a base that shows all notes with a specific topic:
+---
+
+## Enhanced Existing Features
+
+### People Template (CRM)
+Now includes full CRM capabilities:
 ```yaml
-filters:
-  - topics.contains("[[Artificial Intelligence]]")
+type: []              # Client, Friend, Family, Colleague
+role:
+email:
+phone:
+location:
+met:                  # When you first met
+last-contact:         # Last interaction
+topics: []
 ```
 
----
+**Body:** Shows meetings AND work documents for that person.
 
-## Handling Different Note Types
+### People.base New Views
+- **Birthdays this month** - Never miss a birthday
+- **By Organization** - See all people at a company
 
-### Temporary/Fleeting Notes
-**Where:** `Notes/` folder or root
-**Template:** Journal Template
-**Lifecycle:** Review every few days, then either:
-- Delete if not valuable
-- Promote to Clipping if it's from a source
-- Promote to Evergreen if it's a distilled idea
-- Keep as a working note
+### Meetings.base New Views
+- **This Week** - Quick view of recent meetings
+- **Last 7 Days** - Recent meeting history
+- **Recent** - Last 20 meetings
 
-### Literature Notes (Clippings)
-**Where:** `Clippings/` folder
-**Template:** Clipping Template
-**Purpose:** Preserve source material with attribution
-**Lifecycle:** Permanent reference material; mine for Evergreen ideas
+### Products.base New Views
+- **Warranties Expiring** - Products with warranties expiring in 90 days
 
-### Permanent Notes (Evergreen)
-**Where:** `Notes/` folder (or root)
-**Template:** Evergreen Template
-**Purpose:** Atomic, composable ideas
-**Lifecycle:** Permanent; continuously refined and connected
-
-### Working Notes
-**Where:** `Notes/` folder
-**Template:** None specific (or Journal)
-**Purpose:** Active thinking, research, projects
-**Lifecycle:** May become posts, may be archived, may spawn Evergreen notes
-
----
-
-## Suggested How-To Guides
-
-Based on this methodology, here are guides that would be valuable:
-
-### Essential Guides
-1. **How to Capture Fleeting Thoughts** - Using the unique note hotkey and journal workflow
-2. **How to Process Clippings into Evergreen Notes** - The transformation workflow
-3. **How to Create Composable Evergreen Notes** - Writing atomic, linkable ideas
-4. **How to Use the Daily Review Workflow** - Fractal review process (daily → weekly → monthly)
-
-### Category-Specific Guides
-5. **How to Track Books and Reading** - Using the Book template and rating system
-6. **How to Maintain a Personal CRM** - People, meetings, and relationship tracking
-7. **How to Plan and Document Trips** - Trip template and place connections
-8. **How to Track Media Consumption** - Movies, shows, podcasts, games
-
-### Advanced Guides
-9. **How to Create Custom Bases (Databases)** - Building filtered views
-10. **How to Add a New Category** - Template, category page, and base creation
-11. **How to Connect Ideas Across Domains** - Using topics and links effectively
-12. **How to Use Unresolved Links Strategically** - Breadcrumbs for future thinking
-
-### Workflow Guides
-13. **How to Do Weekly Reviews** - Compiling journal fragments
-14. **How to Search and Find Notes** - Using backlinks, tags, and queries
-15. **How to Maintain the Vault Long-Term** - Pruning, refining, and evolving
+### Everything.base New Views
+- **Recently Modified** - Last 30 modified markdown files
 
 ---
 
@@ -285,11 +422,29 @@ Is it from an external source?
 Is it a distilled, atomic idea?
   → Evergreen Template (permanent note)
 
+Is it a procedure I need to remember?
+  → How-to Template
+
+Is it permanent reference info (accounts, docs)?
+  → Reference Template
+
+Is it a subject I want to track?
+  → Topic Template
+
 Is it tracking something specific (book, movie, person)?
   → Use the appropriate media/entity template
 
-Is it active work or research?
-  → Keep as a working note in Notes/
+Is it a business document?
+  → Work Document Template
+
+Is it tracking learning?
+  → Course Template
+
+Is it tracking exercise?
+  → Workout Template
+
+Is it a habit to build?
+  → Habit Template
 ```
 
 ---
@@ -301,14 +456,26 @@ Steph Ango's workflow creates layers of review:
 ```
 Daily: Capture thoughts with unique note hotkey
   ↓
-Every few days: Review journal fragments, extract salient points
+Every few days: Review Inbox.base, process journal fragments
   ↓
-Monthly: Review the reviews, identify themes
+Weekly: Check Review.base for items needing attention
+  ↓
+Monthly: Review the month, identify themes
   ↓
 Yearly: Review monthly reviews, see the big picture
 ```
 
 This creates a "fractal web" where you can trace ideas from inception to development.
+
+---
+
+## Getting Started
+
+See [[Getting Started]] for an onboarding checklist that walks through:
+- Initial setup
+- Understanding the structure
+- Trying core workflows
+- Customizing for your needs
 
 ---
 
