@@ -1,0 +1,145 @@
+filters:
+  and:
+    - categories.contains(link("Work Documents"))
+    - '!file.name.contains("Template")'
+properties:
+  file.name:
+    displayName: Document
+  note.type:
+    displayName: Type
+  note.customer:
+    displayName: Customer
+  note.status:
+    displayName: Status
+  note.value:
+    displayName: Value
+  note.sent:
+    displayName: Sent
+  note.due:
+    displayName: Due
+views:
+  - type: table
+    name: All
+    order:
+      - file.name
+      - type
+      - customer
+      - status
+      - value
+      - sent
+    sort:
+      - property: created
+        direction: DESC
+  - type: table
+    name: Pipeline
+    filters:
+      or:
+        - status = "Draft"
+        - status = "Sent"
+    order:
+      - file.name
+      - type
+      - customer
+      - status
+      - value
+      - due
+    sort:
+      - property: due
+        direction: ASC
+  - type: table
+    name: Proposals
+    filters:
+      and:
+        - list(type).containsAny("Proposal", "Quote")
+    order:
+      - file.name
+      - customer
+      - status
+      - value
+      - sent
+    sort:
+      - property: created
+        direction: DESC
+  - type: table
+    name: Invoices
+    filters:
+      and:
+        - list(type).contains("Invoice")
+    order:
+      - file.name
+      - customer
+      - status
+      - value
+      - due
+      - paid
+    sort:
+      - property: created
+        direction: DESC
+  - type: table
+    name: Unpaid
+    filters:
+      and:
+        - list(type).contains("Invoice")
+        - status != "Paid"
+    order:
+      - file.name
+      - customer
+      - value
+      - due
+    sort:
+      - property: due
+        direction: ASC
+  - type: table
+    name: By Customer
+    filters:
+      and:
+        - list(customer).contains(this)
+    order:
+      - file.name
+      - type
+      - status
+      - value
+      - sent
+    sort:
+      - property: created
+        direction: DESC
+  - type: table
+    name: By Project
+    filters:
+      and:
+        - list(project).contains(this)
+    order:
+      - file.name
+      - type
+      - status
+      - value
+    sort:
+      - property: created
+        direction: DESC
+  - type: table
+    name: Won
+    filters:
+      and:
+        - status = "Accepted"
+    order:
+      - file.name
+      - customer
+      - value
+      - sent
+    sort:
+      - property: sent
+        direction: DESC
+  - type: table
+    name: Lost
+    filters:
+      or:
+        - status = "Rejected"
+        - status = "Expired"
+    order:
+      - file.name
+      - customer
+      - value
+      - sent
+    sort:
+      - property: sent
+        direction: DESC

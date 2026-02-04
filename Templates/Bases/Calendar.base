@@ -1,0 +1,70 @@
+filters:
+  and:
+    - '!file.name.contains("Template")'
+    - file.ext = "md"
+formulas:
+  EventDate: if(date, date, if(start, start, if(created, created)))
+properties:
+  file.name:
+    displayName: Item
+  note.date:
+    displayName: Date
+  note.start:
+    displayName: Start
+  note.end:
+    displayName: End
+  note.categories:
+    displayName: Type
+views:
+  - type: table
+    name: Upcoming
+    filters:
+      and:
+        - formula.EventDate >= now()
+        - formula.EventDate <= (now() + 30 days)
+    order:
+      - file.name
+      - formula.EventDate
+      - categories
+    sort:
+      - property: formula.EventDate
+        direction: ASC
+  - type: table
+    name: This Week
+    filters:
+      and:
+        - formula.EventDate >= now()
+        - formula.EventDate <= (now() + 7 days)
+    order:
+      - file.name
+      - formula.EventDate
+      - categories
+    sort:
+      - property: formula.EventDate
+        direction: ASC
+  - type: table
+    name: Past Week
+    filters:
+      and:
+        - formula.EventDate >= (now() - 7 days)
+        - formula.EventDate < now()
+    order:
+      - file.name
+      - formula.EventDate
+      - categories
+    sort:
+      - property: formula.EventDate
+        direction: DESC
+  - type: table
+    name: All Dated Items
+    filters:
+      and:
+        - '!formula.EventDate.isEmpty()'
+    order:
+      - file.name
+      - formula.EventDate
+      - categories
+    sort:
+      - property: formula.EventDate
+        direction: DESC
+    limit: 50

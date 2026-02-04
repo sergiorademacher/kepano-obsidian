@@ -1,52 +1,52 @@
 filters:
   and:
-    - categories.contains(link("Meetings"))
+    - categories.contains(link("Workouts"))
     - '!file.name.contains("Template")'
 properties:
-  note.date:
-    displayName: Date
-  note.people:
-    displayName: People
+  file.name:
+    displayName: Workout
   note.type:
     displayName: Type
-  file.name:
-    displayName: Meeting
-  note.org:
-    displayName: Org
+  note.duration:
+    displayName: Duration
+  note.intensity:
+    displayName: Intensity
+  note.date:
+    displayName: Date
 views:
   - type: table
-    name: Meetings
+    name: All
     order:
       - file.name
-      - date
       - type
-      - people
+      - duration
+      - intensity
+      - date
     sort:
       - property: date
-        direction: ASC
+        direction: DESC
   - type: table
-    name: Person
-    filters:
-      and:
-        - list(people).contains(this)
+    name: Recent
     order:
       - file.name
-      - date
       - type
-      - people
+      - duration
+      - intensity
+      - date
     sort:
       - property: date
-        direction: ASC
+        direction: DESC
+    limit: 20
   - type: table
-    name: Type
+    name: By Type
     filters:
       and:
         - list(type).contains(this)
     order:
       - file.name
+      - duration
+      - intensity
       - date
-      - people
-      - org
     sort:
       - property: date
         direction: DESC
@@ -57,34 +57,23 @@ views:
         - date >= (now() - 7 days)
     order:
       - file.name
-      - date
       - type
-      - people
+      - duration
+      - intensity
+      - date
     sort:
       - property: date
         direction: DESC
   - type: table
-    name: Last 7 Days
+    name: This Month
     filters:
       and:
-        - date >= (now() - 7 days)
-        - date <= now()
+        - date >= (now() - 30 days)
     order:
       - file.name
-      - date
       - type
-      - people
+      - duration
+      - date
     sort:
       - property: date
         direction: DESC
-  - type: table
-    name: Recent
-    order:
-      - file.name
-      - date
-      - type
-      - people
-    sort:
-      - property: date
-        direction: DESC
-    limit: 20

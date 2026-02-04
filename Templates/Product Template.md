@@ -7,5 +7,6 @@ model:
 rating:
 price:
 acquired: {{date}}
+warranty-expires:
 monthly-uses:
 ---

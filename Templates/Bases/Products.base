@@ -147,3 +147,17 @@ views:
       file.name: 209
       note.monthlyUses: 82
       formula.totalUses: 115
+  - type: table
+    name: Warranties Expiring
+    filters:
+      and:
+        - warranty-expires < (now() + 90 days)
+        - warranty-expires > now()
+    order:
+      - file.name
+      - warranty-expires
+      - acquired
+      - price
+    sort:
+      - property: warranty-expires
+        direction: ASC

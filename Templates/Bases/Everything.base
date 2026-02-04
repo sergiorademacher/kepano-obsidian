@@ -34,3 +34,16 @@ views:
       - property: date
         direction: DESC
     image: formula.Embeds
+  - type: table
+    name: Recently Modified
+    filters:
+      and:
+        - file.ext = "md"
+    order:
+      - file.name
+      - file.mtime
+      - file.path
+    sort:
+      - property: file.mtime
+        direction: DESC
+    limit: 30

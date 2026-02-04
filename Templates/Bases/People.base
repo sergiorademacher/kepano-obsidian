@@ -31,3 +31,27 @@ views:
     columnSize:
       note.tags: 209
       formula.Age: 99
+  - type: table
+    name: Birthdays this month
+    filters:
+      and:
+        - birthday.month = now().month
+    order:
+      - file.name
+      - birthday
+      - formula.Age
+    sort:
+      - property: birthday.day
+        direction: ASC
+  - type: table
+    name: By Organization
+    filters:
+      and:
+        - list(org).contains(this)
+    order:
+      - file.name
+      - role
+      - birthday
+    sort:
+      - property: file.name
+        direction: ASC

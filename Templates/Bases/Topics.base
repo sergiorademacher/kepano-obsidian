@@ -1,0 +1,31 @@
+filters:
+  and:
+    - tags.contains("topic")
+    - '!file.name.contains("Template")'
+properties:
+  file.name:
+    displayName: Topic
+  note.related:
+    displayName: Related Topics
+  file.backlinks:
+    displayName: Notes
+formulas:
+  NoteCount: file.backlinks.length
+views:
+  - type: table
+    name: All Topics
+    order:
+      - file.name
+      - related
+      - formula.NoteCount
+    sort:
+      - property: formula.NoteCount
+        direction: DESC
+  - type: table
+    name: By Note Count
+    order:
+      - file.name
+      - formula.NoteCount
+    sort:
+      - property: formula.NoteCount
+        direction: DESC

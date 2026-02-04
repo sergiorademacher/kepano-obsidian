@@ -1,0 +1,46 @@
+filters:
+  and:
+    - categories.contains(link("How-tos"))
+    - '!file.name.contains("Template")'
+properties:
+  file.name:
+    displayName: How-to
+  note.topics:
+    displayName: Topics
+  note.frequency:
+    displayName: Frequency
+  note.last:
+    displayName: Last Done
+views:
+  - type: table
+    name: All
+    order:
+      - file.name
+      - topics
+      - frequency
+      - last
+    sort:
+      - property: file.name
+        direction: ASC
+  - type: table
+    name: By Topic
+    filters:
+      and:
+        - list(topics).contains(this)
+    order:
+      - file.name
+      - frequency
+      - last
+    sort:
+      - property: file.name
+        direction: ASC
+  - type: table
+    name: Recently Done
+    order:
+      - file.name
+      - topics
+      - last
+    sort:
+      - property: last
+        direction: DESC
+    limit: 20

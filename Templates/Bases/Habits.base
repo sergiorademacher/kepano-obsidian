@@ -1,0 +1,78 @@
+filters:
+  and:
+    - categories.contains(link("Habits"))
+    - '!file.name.contains("Template")'
+properties:
+  file.name:
+    displayName: Habit
+  note.frequency:
+    displayName: Frequency
+  note.target:
+    displayName: Target
+  note.streak:
+    displayName: Streak
+  note.status:
+    displayName: Status
+  note.started:
+    displayName: Started
+views:
+  - type: table
+    name: All
+    order:
+      - file.name
+      - frequency
+      - target
+      - streak
+      - status
+    sort:
+      - property: status
+        direction: ASC
+  - type: table
+    name: Active
+    filters:
+      and:
+        - status = "Active"
+    order:
+      - file.name
+      - frequency
+      - target
+      - streak
+    sort:
+      - property: streak
+        direction: DESC
+  - type: table
+    name: Daily
+    filters:
+      and:
+        - frequency = "Daily"
+        - status = "Active"
+    order:
+      - file.name
+      - target
+      - streak
+    sort:
+      - property: file.name
+        direction: ASC
+  - type: table
+    name: Weekly
+    filters:
+      and:
+        - frequency = "Weekly"
+        - status = "Active"
+    order:
+      - file.name
+      - target
+      - streak
+    sort:
+      - property: file.name
+        direction: ASC
+  - type: table
+    name: Paused
+    filters:
+      and:
+        - status = "Paused"
+    order:
+      - file.name
+      - frequency
+      - streak
+      - started

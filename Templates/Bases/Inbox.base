@@ -1,0 +1,45 @@
+filters:
+  and:
+    - tags.contains("journal")
+    - '!tags.contains("processed")'
+    - '!file.name.contains("Template")'
+properties:
+  file.name:
+    displayName: Note
+  note.created:
+    displayName: Created
+  note.topics:
+    displayName: Topics
+views:
+  - type: table
+    name: Unprocessed
+    filters:
+      and:
+        - created >= (now() - 30 days)
+    order:
+      - file.name
+      - created
+      - topics
+    sort:
+      - property: created
+        direction: DESC
+  - type: table
+    name: Recent (7 days)
+    filters:
+      and:
+        - created >= (now() - 7 days)
+    order:
+      - file.name
+      - created
+    sort:
+      - property: created
+        direction: DESC
+  - type: table
+    name: All Unprocessed
+    order:
+      - file.name
+      - created
+      - topics
+    sort:
+      - property: created
+        direction: DESC

@@ -1,0 +1,94 @@
+filters:
+  and:
+    - categories.contains(link("Courses"))
+    - '!file.name.contains("Template")'
+properties:
+  file.name:
+    displayName: Course
+  note.instructor:
+    displayName: Instructor
+  note.platform:
+    displayName: Platform
+  note.status:
+    displayName: Status
+  note.progress:
+    displayName: Progress
+  note.rating:
+    displayName: Rating
+views:
+  - type: table
+    name: All
+    order:
+      - file.name
+      - instructor
+      - platform
+      - status
+      - progress
+      - rating
+    sort:
+      - property: created
+        direction: DESC
+  - type: table
+    name: In Progress
+    filters:
+      and:
+        - status = "In Progress"
+    order:
+      - file.name
+      - instructor
+      - progress
+      - started
+    sort:
+      - property: started
+        direction: DESC
+  - type: table
+    name: To Start
+    filters:
+      and:
+        - status = "Not Started"
+    order:
+      - file.name
+      - instructor
+      - platform
+      - topics
+    sort:
+      - property: created
+        direction: DESC
+  - type: table
+    name: Completed
+    filters:
+      and:
+        - status = "Completed"
+    order:
+      - file.name
+      - instructor
+      - rating
+      - completed
+    sort:
+      - property: completed
+        direction: DESC
+  - type: table
+    name: By Topic
+    filters:
+      and:
+        - list(topics).contains(this)
+    order:
+      - file.name
+      - instructor
+      - status
+      - rating
+    sort:
+      - property: status
+        direction: ASC
+  - type: table
+    name: By Instructor
+    filters:
+      and:
+        - list(instructor).contains(this)
+    order:
+      - file.name
+      - status
+      - rating
+    sort:
+      - property: created
+        direction: DESC

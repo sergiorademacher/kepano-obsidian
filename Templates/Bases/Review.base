@@ -1,0 +1,58 @@
+filters:
+  and:
+    - '!file.name.contains("Template")'
+    - file.ext = "md"
+formulas:
+  DaysSinceReview: (now() - last).days.floor()
+  NeedsReview: if(frequency = "Daily", formula.DaysSinceReview > 1, if(frequency = "Weekly", formula.DaysSinceReview > 7, if(frequency = "Monthly", formula.DaysSinceReview > 30, if(frequency = "Yearly", formula.DaysSinceReview > 365, false))))
+properties:
+  file.name:
+    displayName: Item
+  note.last:
+    displayName: Last Review
+  note.frequency:
+    displayName: Frequency
+  formula.DaysSinceReview:
+    displayName: Days Since
+views:
+  - type: table
+    name: Needs Review
+    filters:
+      and:
+        - '!last.isEmpty()'
+        - formula.NeedsReview = true
+    order:
+      - file.name
+      - frequency
+      - last
+      - formula.DaysSinceReview
+    sort:
+      - property: formula.DaysSinceReview
+        direction: DESC
+  - type: table
+    name: How-tos Due
+    filters:
+      and:
+        - categories.contains(link("How-tos"))
+        - '!last.isEmpty()'
+    order:
+      - file.name
+      - frequency
+      - last
+      - formula.DaysSinceReview
+    sort:
+      - property: formula.DaysSinceReview
+        direction: DESC
+  - type: table
+    name: Never Reviewed
+    filters:
+      and:
+        - last.isEmpty()
+        - '!frequency.isEmpty()'
+    order:
+      - file.name
+      - frequency
+      - created
+    sort:
+      - property: created
+        direction: ASC
